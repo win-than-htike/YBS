@@ -7,9 +7,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 
+import com.winthan.ybs.utils.MMFontConvert;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.R.attr.name;
+import static android.R.attr.theme;
 import static android.provider.Contacts.SettingsColumns.KEY;
 
 /**
@@ -64,7 +68,6 @@ public class BusDatabaseHandler extends SQLiteOpenHelper {
 
     }
 
-
     public void addBus(Bus bus) {
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -107,8 +110,39 @@ public class BusDatabaseHandler extends SQLiteOpenHelper {
             do {
 
                 BusLine busLine = new BusLine();
-                busLine.setBusStop(cursor.getString(cursor.getColumnIndex(KEY_BUS_STOP_NAME)));
-                busLine.setBusLine(cursor.getString(cursor.getColumnIndex(KEY_BUS_LINE)));
+                busLine.setBusStop(MMFontConvert.uniToZawgyi(cursor.getString(cursor.getColumnIndex(KEY_BUS_STOP_NAME))).toString());
+                busLine.setBusLine(MMFontConvert.uniToZawgyi(cursor.getString(cursor.getColumnIndex(KEY_BUS_LINE))).toString());
+                busLines.add(busLine);
+
+            }while (cursor.moveToNext());
+
+        }
+
+        return busLines;
+
+    }
+
+    public List<BusLine> getSearchBusLine(String searchQuery){
+
+        List<BusLine> busLines = new ArrayList<>();
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.query
+                (
+                        TABLE_BUS_LINE,
+                        new String[] { KEY_BUS_STOP_NAME, KEY_BUS_LINE },
+                        KEY_BUS_STOP_NAME + " LIKE '%" + searchQuery + "%'",
+                        null, null, null, null, null
+                );
+
+        if (cursor.moveToFirst()){
+
+            do {
+
+                BusLine busLine = new BusLine();
+                busLine.setBusStop(MMFontConvert.uniToZawgyi(cursor.getString(cursor.getColumnIndex(KEY_BUS_STOP_NAME))).toString());
+                busLine.setBusLine(MMFontConvert.uniToZawgyi(cursor.getString(cursor.getColumnIndex(KEY_BUS_LINE))).toString());
                 busLines.add(busLine);
 
             }while (cursor.moveToNext());
@@ -146,30 +180,6 @@ public class BusDatabaseHandler extends SQLiteOpenHelper {
 
     }
 
-    public List<Bus> getSelectedBuses(String searchText) {
 
-        List<Bus> buses = new ArrayList<>();
-
-//        String selection =  KEY_BUS_STOP + "='" + start + "' AND " + KEY_BUS_STOP + "='" + end + "'";
-//
-//        SQLiteDatabase db = this.getReadableDatabase();
-//        Cursor cursor = db.query(TABLE_CONTACTS, new String[]{KEY_BUS_NO, KEY_BUS_STOP}, selection, null, null, null,null);
-//
-//        ArrayList<String> busStop = new ArrayList<>();
-//        if (cursor.moveToFirst()) {
-//
-//            do {
-//
-//                Bus bus = new Bus();
-//
-//                buses.add(bus);
-//
-//            } while (cursor.moveToNext());
-//
-//        }
-
-        return buses;
-
-    }
 
 }

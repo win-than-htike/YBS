@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.winthan.ybs.data.Bus;
 import com.winthan.ybs.R;
 import com.winthan.ybs.YBSApp;
+import com.winthan.ybs.utils.ItemClickListener;
 
 import java.util.List;
 
@@ -28,15 +29,18 @@ public class BusAdapter extends RecyclerView.Adapter<BusAdapter.BusViewHolder> {
 
     private List<Bus> buses;
 
-    public BusAdapter(List<Bus> buses) {
+    private ItemClickListener itemClickListener;
+
+    public BusAdapter(List<Bus> buses, ItemClickListener itemClickListener) {
         this.buses = buses;
+        this.itemClickListener = itemClickListener;
         inflater = LayoutInflater.from(YBSApp.getContext());
     }
 
     @Override
     public BusViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.bus_card, parent, false);
-        return new BusViewHolder(view);
+        return new BusViewHolder(view,itemClickListener);
     }
 
     @Override
@@ -49,7 +53,7 @@ public class BusAdapter extends RecyclerView.Adapter<BusAdapter.BusViewHolder> {
         return buses.size();
     }
 
-    public class BusViewHolder extends RecyclerView.ViewHolder {
+    public class BusViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @BindView(R.id.iv_color)
         ImageView ivColor;
@@ -63,14 +67,24 @@ public class BusAdapter extends RecyclerView.Adapter<BusAdapter.BusViewHolder> {
         @BindView(R.id.tv_bus_no)
         TextView tvBusNo;
 
-        public BusViewHolder(View itemView) {
+        private ItemClickListener itemClickListener;
+
+        private Bus bus;
+
+        public BusViewHolder(View itemView,ItemClickListener itemClickListener) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+
+            this.itemClickListener = itemClickListener;
+            itemView.setOnClickListener(this);
+
         }
 
         public void bindData(Bus bus) {
 
             if (bus != null) {
+
+                this.bus = bus;
 
                 String[] buses = bus.getBusStop().split(",");
 
@@ -111,5 +125,9 @@ public class BusAdapter extends RecyclerView.Adapter<BusAdapter.BusViewHolder> {
 
         }
 
+        @Override
+        public void onClick(View view) {
+            if (itemClickListener != null) itemClickListener.onTapBus(bus,getAdapterPosition());
+        }
     }
 }

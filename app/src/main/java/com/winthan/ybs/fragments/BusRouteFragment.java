@@ -14,6 +14,7 @@ import com.winthan.ybs.R;
 import com.winthan.ybs.adapters.BusLineAdapter;
 import com.winthan.ybs.data.BusDatabaseHandler;
 import com.winthan.ybs.data.BusLine;
+import com.winthan.ybs.data.BusLineModel;
 import com.winthan.ybs.utils.CSVFile;
 
 import java.io.InputStream;
@@ -34,6 +35,8 @@ public class BusRouteFragment extends Fragment {
 
     private BusLineAdapter mAdapter;
 
+    private BusDatabaseHandler handler;
+
     public BusRouteFragment() {
         // Required empty public constructor
     }
@@ -46,18 +49,11 @@ public class BusRouteFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_bus_route, container, false);
         ButterKnife.bind(this,view);
 
-        InputStream inputStream = getResources().openRawResource(R.raw.bus_stop);
-        CSVFile csvFile = new CSVFile(inputStream);
-        List<String[]> busLineList = csvFile.read();
-
-        BusDatabaseHandler handler = new BusDatabaseHandler(getActivity());
+        handler = new BusDatabaseHandler(getActivity());
         busLines = handler.getAllBusLine();
 
         if (busLines.size() <= 0){
-
-            for (String[] busLineData : busLineList){
-                handler.addBusLine(busLineData);
-            }
+            BusLineModel.getInstance().addBusLine();
             busLines = handler.getAllBusLine();
 
         }
@@ -72,4 +68,9 @@ public class BusRouteFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        handler.close();
+    }
 }

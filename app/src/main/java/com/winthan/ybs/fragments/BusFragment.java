@@ -1,6 +1,7 @@
 package com.winthan.ybs.fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -15,6 +16,7 @@ import com.winthan.ybs.adapters.BusAdapter;
 import com.winthan.ybs.data.Bus;
 import com.winthan.ybs.data.BusDatabaseHandler;
 import com.winthan.ybs.data.BusModel;
+import com.winthan.ybs.utils.ItemClickListener;
 
 import java.util.List;
 
@@ -33,10 +35,19 @@ public class BusFragment extends Fragment {
 
     private BusAdapter mAdapter;
 
+    private ItemClickListener itemClickListener;
+
+    private BusDatabaseHandler db;
+
     public BusFragment() {
         // Required empty public constructor
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        itemClickListener = (ItemClickListener) context;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,7 +56,7 @@ public class BusFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_bus, container, false);
         ButterKnife.bind(this,view);
 
-        BusDatabaseHandler db = new BusDatabaseHandler(getActivity());
+        db = new BusDatabaseHandler(getActivity());
         busList = db.getAllBuses();
 
         if (busList.size() <= 0){
@@ -57,10 +68,15 @@ public class BusFragment extends Fragment {
         rvBuses.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvBuses.setItemAnimator(new DefaultItemAnimator());
 
-        mAdapter = new BusAdapter(busList);
+        mAdapter = new BusAdapter(busList,itemClickListener);
         rvBuses.setAdapter(mAdapter);
 
         return view;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        db.close();
+    }
 }

@@ -14,15 +14,19 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.winthan.ybs.R;
 import com.winthan.ybs.adapters.ViewPagerAdapter;
+import com.winthan.ybs.data.Bus;
 import com.winthan.ybs.fragments.BusFragment;
 import com.winthan.ybs.fragments.BusRouteFragment;
+import com.winthan.ybs.utils.ItemClickListener;
+import com.winthan.ybs.utils.MMFontUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ItemClickListener{
 
     @BindView(R.id.tabs)
     TabLayout tabLayout;
@@ -42,14 +46,14 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                startActivity(new Intent(MainActivity.this,SearchResultActivity.class));
             }
         });
 
         viewPager.setOffscreenPageLimit(2);
         setUpViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
+        MMFontUtils.applyMMFontToTabLayout(tabLayout);
 
     }
 
@@ -75,10 +79,24 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }
+
+
+    @Override
+    public void onTapBus(Bus bus, int position) {
+
+        String[] busStop = bus.getBusStop().split(",");
+        new MaterialDialog.Builder(this)
+                .title("Bus No : "+bus.getBusNo()+"")
+                .items(busStop)
+                .positiveText("OK")
+                .show();
+
+    }
+
 }

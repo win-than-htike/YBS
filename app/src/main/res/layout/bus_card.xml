@@ -46,7 +46,7 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <TextView
+            <com.winthan.ybs.components.textviews.MMTextView
                 android:id="@+id/tv_start"
                 android:layout_width="match_parent"
                 android:gravity="center_vertical"
@@ -56,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/app_name"/>
 
-            <TextView
+            <com.winthan.ybs.components.textviews.MMTextView
                 android:id="@+id/tv_end"
                 android:layout_width="match_parent"
                 android:gravity="center_vertical"

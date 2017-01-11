@@ -58,6 +58,10 @@ public class BusLineAdapter extends RecyclerView.Adapter<BusLineAdapter.BusLineV
 
     }
 
+    public void clearData(){
+        busLine.clear();
+    }
+
     @Override
     public int getItemCount() {
         return busLine.size();
