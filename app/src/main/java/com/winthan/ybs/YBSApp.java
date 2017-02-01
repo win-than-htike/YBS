@@ -9,6 +9,8 @@ import android.content.Context;
 
 public class YBSApp extends Application {
 
+    public static final String TAG = YBSApp.class.getSimpleName();
+
     private static Context context;
 
     @Override

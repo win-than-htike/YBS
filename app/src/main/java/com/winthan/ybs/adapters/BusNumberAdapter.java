@@ -4,6 +4,7 @@ import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import com.winthan.ybs.YBSApp;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -66,6 +68,7 @@ public class BusNumberAdapter extends RecyclerView.Adapter<BusNumberAdapter.BusN
 
     @Override
     public int getItemCount() {
+        Log.i("BusNo",busNo.size()+"");
         return busNo.size();
     }
 

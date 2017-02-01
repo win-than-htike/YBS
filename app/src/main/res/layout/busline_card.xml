@@ -14,12 +14,13 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <com.winthan.ybs.components.textviews.MMTextView
+        <TextView
             android:id="@+id/tv_bus_stop_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="8dp"
             android:textColor="#000"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/app_name"/>
 
         <android.support.v7.widget.RecyclerView

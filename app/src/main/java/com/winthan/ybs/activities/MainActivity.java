@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this,SearchResultActivity.class));
+                startActivity(new Intent(MainActivity.this,SearchActivity.class));
             }
         });
 
@@ -79,9 +79,13 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
+        if (id == R.id.action_about) {
+            new MaterialDialog.Builder(this)
+                    .title("About Me")
+                    .content("Logo Credit : www.flaticon.com\nImage Credit : yangonbus.com\nDeveloped By One Thing :)")
+                    .positiveText("ok")
+                    .show();
+        }
 
         return super.onOptionsItemSelected(item);
     }

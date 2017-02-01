@@ -3,6 +3,7 @@ package com.winthan.ybs.adapters;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,14 +45,13 @@ public class BusLineAdapter extends RecyclerView.Adapter<BusLineAdapter.BusLineV
     @Override
     public void onBindViewHolder(BusLineViewHolder holder, int position) {
 
-        holder.tvBusLineName.setText(busLine.get(position).getBusStop());
+        holder.tvBusLineName.setText(busLine.get(position).getName());
 
         holder.rvBusLine.setHasFixedSize(true);
         holder.rvBusLine.setLayoutManager(new LinearLayoutManager(YBSApp.getContext(),LinearLayoutManager.HORIZONTAL,false));
         holder.rvBusLine.setItemAnimator(new DefaultItemAnimator());
 
-        String[] busNum = busLine.get(position).getBusLine().split(",");
-        ArrayList<String> busNo = new ArrayList<>(Arrays.asList(busNum));
+        ArrayList<String> busNo = new ArrayList<>(Arrays.asList(busLine.get(position).getBusNos()));
 
         holder.mAdapter = new BusNumberAdapter(busNo);
         holder.rvBusLine.setAdapter(holder.mAdapter);
@@ -60,11 +60,19 @@ public class BusLineAdapter extends RecyclerView.Adapter<BusLineAdapter.BusLineV
 
     public void clearData(){
         busLine.clear();
+        notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
         return busLine.size();
+    }
+
+    public void setNewData(List<BusLine> buses) {
+
+        busLine = buses;
+        notifyDataSetChanged();
+
     }
 
     public class BusLineViewHolder extends RecyclerView.ViewHolder {

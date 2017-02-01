@@ -51,7 +51,7 @@ public class AutoCompleteTextViewAdapter extends ArrayAdapter<BusLine> {
 
         TextView busStop = (TextView) v.findViewById(android.R.id.text1);
         BusLine busLine = busLineList.get(position);
-        busStop.setText(busLine.getBusStop());
+//        busStop.setText(busLine.getBusStop());
 
         return v;
     }
@@ -65,17 +65,17 @@ public class AutoCompleteTextViewAdapter extends ArrayAdapter<BusLine> {
     Filter nameFilter = new Filter() {
         @Override
         public String convertResultToString(Object resultValue) {
-            String str = ((BusLine)(resultValue)).getBusStop();
-            return str;
+//            String str = ((BusLine)(resultValue)).getBusStop();
+            return null;
         }
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             if(constraint != null) {
                 suggestions.clear();
                 for (BusLine busLine : itemsAll) {
-                    if(busLine.getBusStop().toLowerCase().startsWith(constraint.toString().toLowerCase())){
-                        suggestions.add(busLine);
-                    }
+//                    if(busLine.getBusStop().toLowerCase().startsWith(constraint.toString().toLowerCase())){
+//                        suggestions.add(busLine);
+//                    }
                 }
                 FilterResults filterResults = new FilterResults();
                 filterResults.values = suggestions;

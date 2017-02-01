@@ -1,17 +1,21 @@
 package com.winthan.ybs.adapters;
 
+import android.content.Context;
+import android.database.Cursor;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.winthan.ybs.data.Bus;
 import com.winthan.ybs.R;
 import com.winthan.ybs.YBSApp;
+import com.winthan.ybs.data.Bus;
+import com.winthan.ybs.data.BusContract;
 import com.winthan.ybs.utils.ItemClickListener;
 
 import java.util.List;
@@ -40,7 +44,7 @@ public class BusAdapter extends RecyclerView.Adapter<BusAdapter.BusViewHolder> {
     @Override
     public BusViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.bus_card, parent, false);
-        return new BusViewHolder(view,itemClickListener);
+        return new BusViewHolder(view, itemClickListener);
     }
 
     @Override
@@ -51,6 +55,11 @@ public class BusAdapter extends RecyclerView.Adapter<BusAdapter.BusViewHolder> {
     @Override
     public int getItemCount() {
         return buses.size();
+    }
+
+    public void setNewData(List<Bus> buses) {
+        this.buses = buses;
+        notifyDataSetChanged();
     }
 
     public class BusViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -71,7 +80,7 @@ public class BusAdapter extends RecyclerView.Adapter<BusAdapter.BusViewHolder> {
 
         private Bus bus;
 
-        public BusViewHolder(View itemView,ItemClickListener itemClickListener) {
+        public BusViewHolder(View itemView, ItemClickListener itemClickListener) {
             super(itemView);
             ButterKnife.bind(this, itemView);
 
@@ -90,30 +99,30 @@ public class BusAdapter extends RecyclerView.Adapter<BusAdapter.BusViewHolder> {
 
                 tvStart.setText(buses[0]);
 
-                tvEnd.setText(buses[buses.length-1]);
+                tvEnd.setText(buses[buses.length - 1]);
 
                 tvBusNo.setText(String.valueOf(bus.getBusNo()));
 
-                switch (bus.getBusColor()){
+                switch (bus.getBusColor()) {
 
                     case "red":
-                        ivColor.setBackgroundColor(ContextCompat.getColor(YBSApp.getContext(),R.color.red));
+                        ivColor.setBackgroundColor(ContextCompat.getColor(YBSApp.getContext(), R.color.red));
                         break;
 
                     case "blue":
-                        ivColor.setBackgroundColor(ContextCompat.getColor(YBSApp.getContext(),R.color.blue));
+                        ivColor.setBackgroundColor(ContextCompat.getColor(YBSApp.getContext(), R.color.blue));
                         break;
 
                     case "green":
-                        ivColor.setBackgroundColor(ContextCompat.getColor(YBSApp.getContext(),R.color.green));
+                        ivColor.setBackgroundColor(ContextCompat.getColor(YBSApp.getContext(), R.color.green));
                         break;
 
                     case "purple":
-                        ivColor.setBackgroundColor(ContextCompat.getColor(YBSApp.getContext(),R.color.purple));
+                        ivColor.setBackgroundColor(ContextCompat.getColor(YBSApp.getContext(), R.color.purple));
                         break;
 
                     case "brown":
-                        ivColor.setBackgroundColor(ContextCompat.getColor(YBSApp.getContext(),R.color.brown));
+                        ivColor.setBackgroundColor(ContextCompat.getColor(YBSApp.getContext(), R.color.brown));
                         break;
 
                 }
@@ -127,7 +136,9 @@ public class BusAdapter extends RecyclerView.Adapter<BusAdapter.BusViewHolder> {
 
         @Override
         public void onClick(View view) {
-            if (itemClickListener != null) itemClickListener.onTapBus(bus,getAdapterPosition());
+            if (itemClickListener != null) itemClickListener.onTapBus(bus, getAdapterPosition());
         }
     }
+
+
 }
